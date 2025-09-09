@@ -69,11 +69,17 @@ export class DatabaseStorage implements IStorage {
     const user = await this.getUser(userId);
     if (!user) return;
 
-    const newGamesPlayed = user.gamesPlayed + 1;
-    const newGamesWon = won ? user.gamesWon + 1 : user.gamesWon;
-    const newAverageWpm = Math.round((user.averageWpm * user.gamesPlayed + wpm) / newGamesPlayed);
-    const newAverageAccuracy = (user.averageAccuracy * user.gamesPlayed + accuracy) / newGamesPlayed;
-    const newBestWpm = Math.max(user.bestWpm, wpm);
+    const currentGamesPlayed = user.gamesPlayed || 0;
+    const currentGamesWon = user.gamesWon || 0;
+    const currentAverageWpm = user.averageWpm || 0;
+    const currentAverageAccuracy = user.averageAccuracy || 0;
+    const currentBestWpm = user.bestWpm || 0;
+
+    const newGamesPlayed = currentGamesPlayed + 1;
+    const newGamesWon = won ? currentGamesWon + 1 : currentGamesWon;
+    const newAverageWpm = Math.round((currentAverageWpm * currentGamesPlayed + wpm) / newGamesPlayed);
+    const newAverageAccuracy = (currentAverageAccuracy * currentGamesPlayed + accuracy) / newGamesPlayed;
+    const newBestWpm = Math.max(currentBestWpm, wpm);
 
     await db
       .update(users)
