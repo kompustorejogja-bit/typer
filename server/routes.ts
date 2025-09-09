@@ -81,7 +81,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         code: roomCode,
         ownerId: userId,
         textContent,
-        currentPlayers: 0,
       });
 
       res.json(room);

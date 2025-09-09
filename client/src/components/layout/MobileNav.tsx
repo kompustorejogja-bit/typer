@@ -7,9 +7,11 @@ export default function MobileNav() {
     <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border z-50">
       <div className="flex items-center justify-around py-2">
         <Link href="/" data-testid="nav-play">
-          <button className={`flex flex-col items-center py-2 px-4 ${
-            location === "/" ? "text-primary" : "text-muted-foreground"
-          }`}>
+          <button
+            className={`flex flex-col items-center py-2 px-4 ${
+              location === "/" ? "text-primary" : "text-muted-foreground"
+            }`}
+          >
             <i className="fas fa-play text-lg"></i>
             <span className="text-xs mt-1">Play</span>
           </button>

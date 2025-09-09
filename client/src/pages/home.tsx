@@ -71,12 +71,13 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
-      
-      <main className="container mx-auto px-4 py-6 space-y-6 pb-20 lg:pb-6">
+
+      <main className="mb-4 container mx-auto px-4 py-6 space-y-6 pb-20 lg:pb-6">
         {/* Welcome Section */}
         <div className="text-center py-8">
           <h1 className="text-4xl font-bold mb-4">
-            Welcome back, <span className="text-primary">{user.username || 'Player'}</span>!
+            Welcome back,{" "}
+            <span className="text-primary">{user.username || "Player"}</span>!
           </h1>
           <p className="text-xl text-muted-foreground">
             Ready for your next typing challenge?
@@ -94,8 +95,8 @@ export default function Home() {
               <p className="text-muted-foreground">
                 Start a new typing battle and invite friends
               </p>
-              <Button 
-                className="w-full" 
+              <Button
+                className="w-full"
                 onClick={() => setShowCreateRoom(true)}
                 data-testid="button-create-room"
               >
@@ -113,9 +114,9 @@ export default function Home() {
               <p className="text-muted-foreground">
                 Enter a room code to join an existing game
               </p>
-              <Button 
-                variant="outline" 
-                className="w-full" 
+              <Button
+                variant="outline"
+                className="w-full"
                 onClick={() => setShowJoinRoom(true)}
                 data-testid="button-join-room"
               >
@@ -133,8 +134,8 @@ export default function Home() {
               <p className="text-muted-foreground">
                 Improve your skills in solo practice
               </p>
-              <Button 
-                variant="secondary" 
+              <Button
+                variant="secondary"
                 className="w-full"
                 data-testid="button-practice"
               >
@@ -156,26 +157,43 @@ export default function Home() {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-4 bg-muted rounded-lg">
-                  <div className="text-2xl font-bold text-primary" data-testid="text-best-wpm">
+                  <div
+                    className="text-2xl font-bold text-primary"
+                    data-testid="text-best-wpm"
+                  >
                     {user.bestWpm || 0}
                   </div>
                   <div className="text-sm text-muted-foreground">Best WPM</div>
                 </div>
                 <div className="text-center p-4 bg-muted rounded-lg">
-                  <div className="text-2xl font-bold text-accent" data-testid="text-avg-wpm">
+                  <div
+                    className="text-2xl font-bold text-accent"
+                    data-testid="text-avg-wpm"
+                  >
                     {user.averageWpm || 0}
                   </div>
                   <div className="text-sm text-muted-foreground">Avg WPM</div>
                 </div>
                 <div className="text-center p-4 bg-muted rounded-lg">
-                  <div className="text-2xl font-bold text-yellow-500" data-testid="text-games-played">
+                  <div
+                    className="text-2xl font-bold text-yellow-500"
+                    data-testid="text-games-played"
+                  >
                     {user.gamesPlayed || 0}
                   </div>
-                  <div className="text-sm text-muted-foreground">Games Played</div>
+                  <div className="text-sm text-muted-foreground">
+                    Games Played
+                  </div>
                 </div>
                 <div className="text-center p-4 bg-muted rounded-lg">
-                  <div className="text-2xl font-bold text-green-500" data-testid="text-win-rate">
-                    {user.gamesPlayed > 0 ? Math.round((user.gamesWon / user.gamesPlayed) * 100) : 0}%
+                  <div
+                    className="text-2xl font-bold text-green-500"
+                    data-testid="text-win-rate"
+                  >
+                    {user.gamesPlayed > 0
+                      ? Math.round((user.gamesWon / user.gamesPlayed) * 100)
+                      : 0}
+                    %
                   </div>
                   <div className="text-sm text-muted-foreground">Win Rate</div>
                 </div>
@@ -194,22 +212,31 @@ export default function Home() {
             <CardContent>
               <div className="space-y-3">
                 {leaderboard?.slice(0, 5).map((player: any, index: number) => (
-                  <div 
-                    key={player.id} 
+                  <div
+                    key={player.id}
                     className="flex items-center justify-between p-3 bg-muted rounded-lg"
                     data-testid={`leaderboard-player-${index}`}
                   >
                     <div className="flex items-center space-x-3">
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                        index === 0 ? 'bg-yellow-500 text-black' : 
-                        index === 1 ? 'bg-gray-400 text-white' :
-                        index === 2 ? 'bg-orange-600 text-white' : 'bg-gray-600 text-white'
-                      }`}>
+                      <div
+                        className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                          index === 0
+                            ? "bg-yellow-500 text-black"
+                            : index === 1
+                              ? "bg-gray-400 text-white"
+                              : index === 2
+                                ? "bg-orange-600 text-white"
+                                : "bg-gray-600 text-white"
+                        }`}
+                      >
                         {index + 1}
                       </div>
                       <div>
-                        <div className="font-medium text-sm" data-testid={`text-player-username-${index}`}>
-                          {player.username || 'Anonymous'}
+                        <div
+                          className="font-medium text-sm"
+                          data-testid={`text-player-username-${index}`}
+                        >
+                          {player.username || "Anonymous"}
                         </div>
                         <div className="text-xs text-muted-foreground">
                           {player.gamesPlayed} games
@@ -217,7 +244,10 @@ export default function Home() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-bold text-primary" data-testid={`text-player-wpm-${index}`}>
+                      <div
+                        className="font-bold text-primary"
+                        data-testid={`text-player-wpm-${index}`}
+                      >
                         {player.bestWpm}
                       </div>
                       <div className="text-xs text-muted-foreground">WPM</div>
@@ -231,14 +261,14 @@ export default function Home() {
       </main>
 
       <MobileNav />
-      
-      <CreateRoomModal 
-        open={showCreateRoom} 
+
+      <CreateRoomModal
+        open={showCreateRoom}
         onOpenChange={setShowCreateRoom}
         onRoomCreated={(roomCode) => setLocation(`/game/${roomCode}`)}
       />
-      <JoinRoomModal 
-        open={showJoinRoom} 
+      <JoinRoomModal
+        open={showJoinRoom}
         onOpenChange={setShowJoinRoom}
         onRoomJoined={(roomCode) => setLocation(`/game/${roomCode}`)}
       />
