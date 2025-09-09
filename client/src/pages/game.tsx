@@ -5,6 +5,7 @@ import { useParams, useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { isUnauthorizedError } from "@/lib/authUtils";
+import type { RoomWithParticipants, GameParticipantWithUser } from "@shared/schema";
 import Header from "@/components/layout/Header";
 import MobileNav from "@/components/layout/MobileNav";
 import TypingArea from "@/components/game/TypingArea";
@@ -46,7 +47,7 @@ export default function Game() {
   }, [user, isLoading, toast]);
 
   // Fetch room data
-  const { data: room, isLoading: roomLoading, error: roomError } = useQuery({
+  const { data: room, isLoading: roomLoading, error: roomError } = useQuery<RoomWithParticipants>({
     queryKey: ["/api/rooms", code],
     enabled: !!code && !!user,
     retry: false,
@@ -67,7 +68,7 @@ export default function Game() {
   });
 
   // Fetch participants
-  const { data: participants, refetch: refetchParticipants } = useQuery({
+  const { data: participants, refetch: refetchParticipants } = useQuery<GameParticipantWithUser[]>({
     queryKey: ["/api/rooms", room?.id, "participants"],
     enabled: !!room?.id,
     refetchInterval: 2000, // Poll every 2 seconds for real-time updates
@@ -162,7 +163,13 @@ export default function Game() {
   // Update progress periodically
   useEffect(() => {
     if (room?.status === "in_progress" && gameState.progress > 0) {
-      updateProgressMutation.mutate(gameState);
+      updateProgressMutation.mutate({
+        wpm: gameState.currentWpm,
+        accuracy: gameState.accuracy,
+        progress: gameState.progress,
+        charactersTyped: gameState.charactersTyped,
+        errors: gameState.errors,
+      });
     }
   }, [gameState.currentWpm, gameState.accuracy, gameState.progress]);
 
@@ -297,11 +304,11 @@ export default function Game() {
             />
             
             <TypingArea 
-              textContent={room.textContent}
-              difficulty={room.difficulty}
+              textContent={room.textContent || ''}
+              difficulty={room.difficulty || 'medium'}
               onProgress={handleTypingProgress}
               onComplete={handleGameComplete}
-              gameStatus={room.status}
+              gameStatus={room.status || 'waiting'}
             />
             
             {participants && (
@@ -355,7 +362,7 @@ export default function Game() {
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground">Win Rate</span>
                       <span className="font-bold text-accent" data-testid="text-user-win-rate">
-                        {user.gamesPlayed > 0 ? Math.round((user.gamesWon / user.gamesPlayed) * 100) : 0}%
+                        {(user.gamesPlayed || 0) > 0 ? Math.round(((user.gamesWon || 0) / (user.gamesPlayed || 0)) * 100) : 0}%
                       </span>
                     </div>
                     <div className="flex justify-between items-center">

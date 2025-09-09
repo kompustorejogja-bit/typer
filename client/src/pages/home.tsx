@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useLocation } from "wouter";
+import type { User } from "@shared/schema";
 
 export default function Home() {
   const { user, isLoading } = useAuth();
@@ -33,7 +34,7 @@ export default function Home() {
     }
   }, [user, isLoading, toast]);
 
-  const { data: leaderboard } = useQuery({
+  const { data: leaderboard } = useQuery<User[]>({
     queryKey: ["/api/leaderboard"],
     retry: false,
   });
@@ -190,8 +191,8 @@ export default function Home() {
                     className="text-2xl font-bold text-green-500"
                     data-testid="text-win-rate"
                   >
-                    {user.gamesPlayed > 0
-                      ? Math.round((user.gamesWon / user.gamesPlayed) * 100)
+                    {(user.gamesPlayed || 0) > 0
+                      ? Math.round(((user.gamesWon || 0) / (user.gamesPlayed || 0)) * 100)
                       : 0}
                     %
                   </div>
